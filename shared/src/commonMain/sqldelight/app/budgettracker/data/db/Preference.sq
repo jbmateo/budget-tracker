@@ -3,8 +3,8 @@ CREATE TABLE preference (
     value TEXT NOT NULL
 );
 
-valueOf:
+selectValue:
 SELECT value FROM preference WHERE key = ?;
 
-put:
+upsert:
 INSERT OR REPLACE INTO preference(key, value) VALUES (?, ?);

@@ -1,0 +1,12 @@
+CREATE TABLE budget_version (
+    period TEXT NOT NULL,
+    amount INTEGER,
+    effective_from TEXT NOT NULL,
+    PRIMARY KEY (period, effective_from)
+);
+
+selectAll:
+SELECT * FROM budget_version ORDER BY period, effective_from;
+
+upsert:
+INSERT OR REPLACE INTO budget_version(period, amount, effective_from) VALUES (?, ?, ?);

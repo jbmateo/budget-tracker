@@ -1,0 +1,28 @@
+CREATE TABLE expense (
+    id TEXT NOT NULL PRIMARY KEY,
+    amount INTEGER NOT NULL CHECK (amount > 0),
+    category TEXT NOT NULL,
+    note TEXT NOT NULL,
+    date TEXT NOT NULL,
+    created_at INTEGER NOT NULL
+);
+
+CREATE INDEX expense_date ON expense(date);
+
+dailyTotals:
+SELECT date, SUM(amount) AS total FROM expense WHERE date BETWEEN :from AND :to GROUP BY date;
+
+selectBetween:
+SELECT * FROM expense WHERE date BETWEEN :from AND :to ORDER BY date DESC, created_at DESC;
+
+selectRecent:
+SELECT * FROM expense ORDER BY date DESC, created_at DESC LIMIT :limit;
+
+selectById:
+SELECT * FROM expense WHERE id = ?;
+
+upsert:
+INSERT OR REPLACE INTO expense(id, amount, category, note, date, created_at) VALUES ?;
+
+delete:
+DELETE FROM expense WHERE id = ?;
