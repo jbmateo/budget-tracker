@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.LocalDate
 import kotlin.time.Instant
-import app.budgettracker.data.db.Expense as ExpenseRow
+import app.budgettracker.data.db.Expense_record as ExpenseRow
 
 class SqlExpenseRepository(private val db: BudgetDatabase, private val io: CoroutineDispatcher) : ExpenseRepository {
     private val q = db.expenseQueries

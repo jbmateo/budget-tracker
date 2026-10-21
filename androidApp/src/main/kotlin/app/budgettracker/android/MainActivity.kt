@@ -3,11 +3,16 @@ package app.budgettracker.android
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material3.Text
+import androidx.activity.enableEdgeToEdge
+import app.budgettracker.android.ui.nav.AppNav
+import app.budgettracker.android.ui.theme.BudgetTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { Text("Budget") }
+        enableEdgeToEdge()
+        setContent {
+            BudgetTheme { AppNav() }
+        }
     }
 }

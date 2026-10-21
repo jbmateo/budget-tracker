@@ -58,7 +58,7 @@ class SqlRepositoriesTest {
 
     @Test
     fun unknownCategoryReadsAsOther() = runTest {
-        db.expenseQueries.upsert(app.budgettracker.data.db.Expense("x", 5, "PETS", "", "2026-10-21", 0))
+        db.expenseQueries.upsert(app.budgettracker.data.db.Expense_record("x", 5, "PETS", "", "2026-10-21", 0))
         assertEquals(ExpenseCategory.OTHER, expenses.get("x")!!.category)
     }
 
