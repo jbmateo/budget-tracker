@@ -5,6 +5,7 @@ import app.budgettracker.presentation.budgets.BudgetsViewModel
 import app.budgettracker.presentation.expenseform.ExpenseFormViewModel
 import app.budgettracker.presentation.expenses.ExpensesViewModel
 import app.budgettracker.presentation.home.HomeViewModel
+import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.LocalDate
 import org.koin.core.parameter.parametersOf
 import org.koin.mp.KoinPlatformTools
@@ -13,12 +14,13 @@ import org.koin.mp.KoinPlatformTools
 object KoinHelper {
     /**
      * Starts Koin once; safe to call repeatedly. [resetDatabase] deletes the database first (UI tests).
-     * [fixedToday] (ISO date, UI tests only) pins "today".
+     * [fixedToday] (ISO date, UI tests only) pins "today". [seedSample] (debug only) adds sample data to an empty DB.
      */
-    fun start(resetDatabase: Boolean = false, fixedToday: String? = null) {
+    fun start(resetDatabase: Boolean = false, fixedToday: String? = null, seedSample: Boolean = false) {
         if (KoinPlatformTools.defaultContext().getOrNull() != null) return
         if (resetDatabase) deleteBudgetDatabase()
-        initKoin(fixedToday = fixedToday?.let(LocalDate::parse))
+        val koin = initKoin(fixedToday = fixedToday?.let(LocalDate::parse)).koin
+        if (seedSample) runBlocking { seedSampleData(koin) }
     }
 
     private val koin get() = KoinPlatformTools.defaultContext().get()

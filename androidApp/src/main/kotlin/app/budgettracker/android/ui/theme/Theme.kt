@@ -43,9 +43,15 @@ val LocalBudgetColors = staticCompositionLocalOf { Light }
 fun BudgetTheme(content: @Composable () -> Unit) {
     val dark = isSystemInDarkTheme()
     val scheme = if (dark) {
-        darkColorScheme(primary = Color(0xFF5FD3A6), onPrimary = Color(0xFF003828), background = Dark.canvas, surface = Dark.canvas)
+        darkColorScheme(
+            primary = Color(0xFF5FD3A6), onPrimary = Color(0xFF003828), background = Dark.canvas, surface = Dark.canvas,
+            surfaceContainer = Dark.card, secondaryContainer = Color(0xFF0B4A3A), onSecondaryContainer = Color(0xFFBFE3D4),
+        )
     } else {
-        lightColorScheme(primary = Color(0xFF0E5C47), onPrimary = Color.White, background = Light.canvas, surface = Light.canvas)
+        lightColorScheme(
+            primary = Color(0xFF0E5C47), onPrimary = Color.White, background = Light.canvas, surface = Light.canvas,
+            surfaceContainer = Light.card, secondaryContainer = Color(0xFFCFEBDF), onSecondaryContainer = Color(0xFF0E5C47),
+        )
     }
     CompositionLocalProvider(LocalBudgetColors provides if (dark) Dark else Light) {
         MaterialTheme(colorScheme = scheme, content = content)
