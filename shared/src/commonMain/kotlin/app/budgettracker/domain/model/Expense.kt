@@ -8,14 +8,14 @@ const val MAX_NOTE_LENGTH = 80
 data class Expense(
     val id: String,
     val amount: Long,
-    val category: Category,
+    val category: ExpenseCategory,
     val note: String,
     val date: LocalDate,
     val createdAt: Instant,
 )
 
 /** Fixed expense categories. Stored by [key]; unknown keys resolve to [OTHER]. */
-enum class Category(val label: String) {
+enum class ExpenseCategory(val label: String) {
     FOOD("Food"),
     GROCERIES("Groceries"),
     TRANSPORT("Transport"),
@@ -28,6 +28,6 @@ enum class Category(val label: String) {
     val key: String get() = name
 
     companion object {
-        fun fromKey(key: String): Category = entries.firstOrNull { it.name == key } ?: OTHER
+        fun fromKey(key: String): ExpenseCategory = entries.firstOrNull { it.name == key } ?: OTHER
     }
 }

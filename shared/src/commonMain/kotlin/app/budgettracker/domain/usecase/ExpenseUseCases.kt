@@ -1,6 +1,6 @@
 package app.budgettracker.domain.usecase
 
-import app.budgettracker.domain.model.Category
+import app.budgettracker.domain.model.ExpenseCategory
 import app.budgettracker.domain.model.DomainError
 import app.budgettracker.domain.model.Expense
 import app.budgettracker.domain.model.MAX_NOTE_LENGTH
@@ -25,7 +25,7 @@ class SaveExpense(
     suspend operator fun invoke(
         id: String?,
         amountText: String,
-        category: Category,
+        category: ExpenseCategory,
         note: String,
         date: LocalDate,
     ): Outcome<Expense> {

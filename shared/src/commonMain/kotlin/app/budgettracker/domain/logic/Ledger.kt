@@ -27,7 +27,7 @@ fun computeStatus(
         range = range.next(period)
     }
     val budget = budgetFor(own, current, today) ?: return null
-    return PeriodStatus(period, current, budget, carry, dailyTotals.spentIn(current))
+    return PeriodStatus(period, current, budget, carry, dailyTotals.spentIn(current), current.daysLeft(today))
 }
 
 internal fun Map<LocalDate, Long>.spentIn(range: PeriodRange): Long = range.dates().sumOf { this[it] ?: 0L }

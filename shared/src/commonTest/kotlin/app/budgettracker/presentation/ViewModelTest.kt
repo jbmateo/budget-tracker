@@ -1,7 +1,7 @@
 package app.budgettracker.presentation
 
 import app.budgettracker.domain.model.BudgetVersion
-import app.budgettracker.domain.model.Category
+import app.budgettracker.domain.model.ExpenseCategory
 import app.budgettracker.domain.model.Currency
 import app.budgettracker.domain.model.DomainError
 import app.budgettracker.domain.model.Expense
@@ -68,7 +68,7 @@ class ViewModelTest {
         val home = HomeViewModel(dashboard)
         collect(home.state)
         assertEquals(50_000, home.state.value.dashboard!!.daily!!.left)
-        save(null, "120", Category.FOOD, "", d("2026-10-21"))
+        save(null, "120", ExpenseCategory.FOOD, "", d("2026-10-21"))
         advanceUntilIdle()
         assertEquals(38_000, home.state.value.dashboard!!.daily!!.left)
         assertEquals(1, home.state.value.dashboard!!.recent.size)
@@ -77,7 +77,7 @@ class ViewModelTest {
     @Test
     fun dayChangeWhileOpenRollsLeftoverIntoCarry() = runTest {
         budgets.put(BudgetVersion(Period.DAILY, 50_000, d("2026-10-21")))
-        save(null, "300", Category.FOOD, "", d("2026-10-21"))
+        save(null, "300", ExpenseCategory.FOOD, "", d("2026-10-21"))
         val home = HomeViewModel(dashboard)
         collect(home.state)
         assertEquals(0, home.state.value.dashboard!!.daily!!.carry)
@@ -93,7 +93,7 @@ class ViewModelTest {
     fun editingPastExpenseChangesCarry() = runTest {
         clock.setToday(d("2026-10-20"))
         budgets.put(BudgetVersion(Period.DAILY, 50_000, d("2026-10-20")))
-        save(null, "300", Category.FOOD, "", d("2026-10-20"))
+        save(null, "300", ExpenseCategory.FOOD, "", d("2026-10-20"))
         clock.setToday(d("2026-10-21"))
         val home = HomeViewModel(dashboard)
         collect(home.state)
@@ -136,14 +136,14 @@ class ViewModelTest {
     fun formSavesTrimmedNoteAndDeletes() = runTest {
         val form = ExpenseFormViewModel(null, GetExpense(expenses), save, DeleteExpense(expenses), clock)
         form.setAmount("1,250.5")
-        form.setCategory(Category.TRANSPORT)
+        form.setCategory(ExpenseCategory.TRANSPORT)
         form.setNote("  taxi  ")
         form.save()
         advanceUntilIdle()
         val saved = expenses.items.value.values.single()
         assertEquals(125_050, saved.amount)
         assertEquals("taxi", saved.note)
-        assertEquals(Category.TRANSPORT, saved.category)
+        assertEquals(ExpenseCategory.TRANSPORT, saved.category)
 
         val edit = ExpenseFormViewModel(saved.id, GetExpense(expenses), save, DeleteExpense(expenses), clock)
         advanceUntilIdle()
@@ -172,7 +172,7 @@ class ViewModelTest {
     }
 
     private fun e(id: String, amount: Long, date: String) =
-        Expense(id, amount, Category.FOOD, "", d(date), Instant.fromEpochMilliseconds(0))
+        Expense(id, amount, ExpenseCategory.FOOD, "", d(date), Instant.fromEpochMilliseconds(0))
 
     @Test
     fun expensesMonthNavigationAndGrouping() = runTest {

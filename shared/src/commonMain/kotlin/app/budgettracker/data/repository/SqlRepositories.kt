@@ -5,7 +5,7 @@ import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOneOrNull
 import app.budgettracker.data.db.BudgetDatabase
 import app.budgettracker.domain.model.BudgetVersion
-import app.budgettracker.domain.model.Category
+import app.budgettracker.domain.model.ExpenseCategory
 import app.budgettracker.domain.model.Currency
 import app.budgettracker.domain.model.Expense
 import app.budgettracker.domain.model.Period
@@ -54,7 +54,7 @@ class SqlExpenseRepository(private val db: BudgetDatabase, private val io: Corou
     private fun toDomain(row: ExpenseRow) = Expense(
         id = row.id,
         amount = row.amount,
-        category = Category.fromKey(row.category),
+        category = ExpenseCategory.fromKey(row.category),
         note = row.note,
         date = LocalDate.parse(row.date),
         createdAt = Instant.fromEpochMilliseconds(row.created_at),

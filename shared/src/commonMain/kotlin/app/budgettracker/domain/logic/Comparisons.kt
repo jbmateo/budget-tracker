@@ -1,7 +1,7 @@
 package app.budgettracker.domain.logic
 
 import app.budgettracker.domain.model.BudgetVersion
-import app.budgettracker.domain.model.Category
+import app.budgettracker.domain.model.ExpenseCategory
 import app.budgettracker.domain.model.Expense
 import app.budgettracker.domain.model.Period
 import app.budgettracker.domain.model.PeriodRange
@@ -18,7 +18,7 @@ data class Comparison(val current: Long, val previous: Long) {
     val deltaPercent: Int? get() = if (previous == 0L) null else ((current - previous) * 100.0 / previous).roundToInt()
 }
 
-data class CategoryComparison(val category: Category, val current: Long, val previous: Long)
+data class CategoryComparison(val category: ExpenseCategory, val current: Long, val previous: Long)
 
 /** One bar of the recent-days chart. [budget] is that day's daily budget, if one was set. */
 data class DayBar(val date: LocalDate, val spent: Long, val budget: Long?)
@@ -43,7 +43,7 @@ fun categoryMonthToDate(today: LocalDate, expenses: List<Expense>): List<Categor
 }
 
 fun categoryComparison(expenses: List<Expense>, current: PeriodRange, previous: PeriodRange): List<CategoryComparison> =
-    Category.entries
+    ExpenseCategory.entries
         .map { cat ->
             val mine = expenses.filter { it.category == cat }
             CategoryComparison(

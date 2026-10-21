@@ -2,7 +2,7 @@ package app.budgettracker.presentation.expenseform
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.budgettracker.domain.model.Category
+import app.budgettracker.domain.model.ExpenseCategory
 import app.budgettracker.domain.model.DomainError
 import app.budgettracker.domain.model.MoneyFormatter
 import app.budgettracker.domain.model.Outcome
@@ -25,14 +25,14 @@ data class ExpenseFormUiState(
     val isEdit: Boolean,
     val isLoading: Boolean,
     val amountText: String,
-    val category: Category,
+    val category: ExpenseCategory,
     val date: LocalDate,
     val note: String,
     val maxDate: LocalDate,
     val error: DomainError?,
     val isSaving: Boolean,
     val done: Boolean,
-    val categories: List<Category> = Category.entries,
+    val categories: List<ExpenseCategory> = ExpenseCategory.entries,
 )
 
 /** @param expenseId the expense to edit, or null to add one. */
@@ -49,7 +49,7 @@ class ExpenseFormViewModel(
             isEdit = expenseId != null,
             isLoading = expenseId != null,
             amountText = "",
-            category = Category.FOOD,
+            category = ExpenseCategory.FOOD,
             date = today,
             note = "",
             maxDate = today,
@@ -78,7 +78,7 @@ class ExpenseFormViewModel(
     }
 
     fun setAmount(text: String) = _state.update { it.copy(amountText = text, error = null) }
-    fun setCategory(category: Category) = _state.update { it.copy(category = category) }
+    fun setCategory(category: ExpenseCategory) = _state.update { it.copy(category = category) }
     fun setNote(note: String) = _state.update { it.copy(note = note, error = null) }
     fun setDate(year: Int, month: Int, day: Int) = _state.update { it.copy(date = LocalDate(year, month, day), error = null) }
 

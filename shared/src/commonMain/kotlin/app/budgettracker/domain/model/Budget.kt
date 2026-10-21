@@ -22,6 +22,8 @@ data class PeriodStatus(
     val budget: Long,
     val carry: Long,
     val spent: Long,
+    /** Days left in the period, today included. */
+    val daysLeft: Int,
 ) {
     val available: Long get() = budget + carry
     val left: Long get() = available - spent

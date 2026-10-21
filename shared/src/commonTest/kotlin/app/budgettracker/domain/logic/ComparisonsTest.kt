@@ -1,7 +1,7 @@
 package app.budgettracker.domain.logic
 
 import app.budgettracker.domain.model.BudgetVersion
-import app.budgettracker.domain.model.Category
+import app.budgettracker.domain.model.ExpenseCategory
 import app.budgettracker.domain.model.Expense
 import app.budgettracker.domain.model.Period
 import kotlinx.datetime.LocalDate
@@ -49,22 +49,22 @@ class ComparisonsTest {
         assertEquals(Comparison(5, 7), compareMonthToDate(d("2026-10-21"), t2))
     }
 
-    private fun e(cat: Category, amount: Long, date: String) =
+    private fun e(cat: ExpenseCategory, amount: Long, date: String) =
         Expense("id-$date-$amount", amount, cat, "", d(date), Instant.fromEpochMilliseconds(0))
 
     @Test
     fun categoriesMonthToDateSortedByCurrent() {
         val list = listOf(
-            e(Category.FOOD, 100, "2026-10-02"), e(Category.FOOD, 50, "2026-10-20"),
-            e(Category.TRANSPORT, 300, "2026-10-05"),
-            e(Category.FOOD, 80, "2026-09-10"), e(Category.BILLS, 500, "2026-09-03"),
-            e(Category.SHOPPING, 900, "2026-09-25"), // after Sep 21 → outside last month's span
+            e(ExpenseCategory.FOOD, 100, "2026-10-02"), e(ExpenseCategory.FOOD, 50, "2026-10-20"),
+            e(ExpenseCategory.TRANSPORT, 300, "2026-10-05"),
+            e(ExpenseCategory.FOOD, 80, "2026-09-10"), e(ExpenseCategory.BILLS, 500, "2026-09-03"),
+            e(ExpenseCategory.SHOPPING, 900, "2026-09-25"), // after Sep 21 → outside last month's span
         )
         assertEquals(
             listOf(
-                CategoryComparison(Category.TRANSPORT, 300, 0),
-                CategoryComparison(Category.FOOD, 150, 80),
-                CategoryComparison(Category.BILLS, 0, 500),
+                CategoryComparison(ExpenseCategory.TRANSPORT, 300, 0),
+                CategoryComparison(ExpenseCategory.FOOD, 150, 80),
+                CategoryComparison(ExpenseCategory.BILLS, 0, 500),
             ),
             categoryMonthToDate(d("2026-10-21"), list),
         )

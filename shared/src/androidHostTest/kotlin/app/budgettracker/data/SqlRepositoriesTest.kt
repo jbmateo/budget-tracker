@@ -4,7 +4,7 @@ import app.budgettracker.data.repository.SqlBudgetRepository
 import app.budgettracker.data.repository.SqlExpenseRepository
 import app.budgettracker.data.repository.SqlPreferencesRepository
 import app.budgettracker.domain.model.BudgetVersion
-import app.budgettracker.domain.model.Category
+import app.budgettracker.domain.model.ExpenseCategory
 import app.budgettracker.domain.model.Currency
 import app.budgettracker.domain.model.Expense
 import app.budgettracker.domain.model.Period
@@ -24,7 +24,7 @@ class SqlRepositoriesTest {
     private val prefs = SqlPreferencesRepository(db, Dispatchers.Unconfined)
     private fun d(s: String) = LocalDate.parse(s)
     private fun e(id: String, amount: Long, date: String, created: Long = 0) =
-        Expense(id, amount, Category.FOOD, "note", d(date), Instant.fromEpochMilliseconds(created))
+        Expense(id, amount, ExpenseCategory.FOOD, "note", d(date), Instant.fromEpochMilliseconds(created))
 
     @Test
     fun dailyTotalsGroupByDateWithinRange() = runTest {
@@ -59,7 +59,7 @@ class SqlRepositoriesTest {
     @Test
     fun unknownCategoryReadsAsOther() = runTest {
         db.expenseQueries.upsert(app.budgettracker.data.db.Expense("x", 5, "PETS", "", "2026-10-21", 0))
-        assertEquals(Category.OTHER, expenses.get("x")!!.category)
+        assertEquals(ExpenseCategory.OTHER, expenses.get("x")!!.category)
     }
 
     @Test

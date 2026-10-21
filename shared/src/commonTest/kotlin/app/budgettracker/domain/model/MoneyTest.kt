@@ -42,7 +42,7 @@ class MoneyTest {
         assertEquals(Currency.PHP, Currency.fromCode("XYZ"))
         assertEquals(Currency.PHP, Currency.fromCode(null))
         assertEquals(Currency.USD, Currency.fromCode("USD"))
-        assertEquals(Category.OTHER, Category.fromKey("PETS"))
-        assertEquals(Category.FOOD, Category.fromKey("FOOD"))
+        assertEquals(ExpenseCategory.OTHER, ExpenseCategory.fromKey("PETS"))
+        assertEquals(ExpenseCategory.FOOD, ExpenseCategory.fromKey("FOOD"))
     }
 }
