@@ -25,7 +25,7 @@ class SqlExpenseRepository(private val db: BudgetDatabase, private val io: Corou
     private val q = db.expenseQueries
 
     override fun observeDailyTotals(from: LocalDate, to: LocalDate): Flow<Map<LocalDate, Long>> =
-        q.dailyTotals(from.toString(), to.toString()) { date, total -> LocalDate.parse(date) to (total ?: 0L) }
+        q.dailyTotals(from.toString(), to.toString()) { date, total -> LocalDate.parse(date) to total }
             .asFlow().mapToList(io).map { it.toMap() }
 
     override fun observeBetween(from: LocalDate, to: LocalDate): Flow<List<Expense>> =

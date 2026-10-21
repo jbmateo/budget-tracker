@@ -39,7 +39,11 @@ fun compareMonthToDate(today: LocalDate, totals: Map<LocalDate, Long>): Comparis
 /** Per-category month-to-date vs the same span last month; biggest current first, rows with no spending dropped. */
 fun categoryMonthToDate(today: LocalDate, expenses: List<Expense>): List<CategoryComparison> {
     val (current, previous) = monthSpans(today)
-    return Category.entries
+    return categoryComparison(expenses, current, previous)
+}
+
+fun categoryComparison(expenses: List<Expense>, current: PeriodRange, previous: PeriodRange): List<CategoryComparison> =
+    Category.entries
         .map { cat ->
             val mine = expenses.filter { it.category == cat }
             CategoryComparison(
@@ -50,6 +54,15 @@ fun categoryMonthToDate(today: LocalDate, expenses: List<Expense>): List<Categor
         }
         .filter { it.current > 0 || it.previous > 0 }
         .sortedWith(compareByDescending<CategoryComparison> { it.current }.thenByDescending { it.previous })
+
+/**
+ * Spans to compare for a viewed month: the current month uses month-to-date vs the same days last month;
+ * a past month compares whole month vs whole previous month.
+ */
+fun monthSpansFor(month: YearMonth, today: LocalDate): Pair<PeriodRange, PeriodRange> {
+    if (month == YearMonth(today.year, today.month)) return monthSpans(today)
+    val previous = month.firstDay.minus(DatePeriod(days = 1)).let { YearMonth(it.year, it.month) }
+    return PeriodRange(month.firstDay, month.lastDay) to PeriodRange(previous.firstDay, previous.lastDay)
 }
 
 /** The last [n] days ending today, oldest first. */
