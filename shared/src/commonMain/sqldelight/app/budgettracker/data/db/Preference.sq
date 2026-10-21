@@ -1,0 +1,10 @@
+CREATE TABLE preference (
+    key TEXT NOT NULL PRIMARY KEY,
+    value TEXT NOT NULL
+);
+
+valueOf:
+SELECT value FROM preference WHERE key = ?;
+
+put:
+INSERT OR REPLACE INTO preference(key, value) VALUES (?, ?);
